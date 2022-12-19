@@ -59,47 +59,49 @@ class _LocationHomeScreenState extends State<LocationHomeScreen> {
         appBar: AppBar(
           title: Text('Location'),
         ),
-        body: Column(
-          children: [
-            if (_staticMapUrl.isNotEmpty) Image.network(_staticMapUrl),
-            if (_address.isNotEmpty) Text('$_address'),
-            ElevatedButton(
-                onPressed: () async {
-                  bool serviceEnabled = await _location.serviceEnabled();
-                  if (!serviceEnabled) {
-                    serviceEnabled = await _location.requestService();
-                    if (!serviceEnabled) return;
-                  }
-                  PermissionStatus permissionStatus =
-                      await _location.hasPermission();
-                  if (permissionStatus == PermissionStatus.denied) {
-                    permissionStatus = await _location.requestPermission();
-                    if (permissionStatus == PermissionStatus.denied) return;
-                  }
-                  final locationData = await _location.getLocation();
-                  String address = await LocationService.getCoordinateAddress(
-                    latitude: locationData.latitude!,
-                    longitude: locationData.longitude!,
-                  );
-                  print(locationData.latitude);
-                  print(locationData.longitude);
-                  setState(() {
-                    _locationData =
-                        LatLng(locationData.latitude!, locationData.longitude!);
-                    _address = address;
-                    _staticMapUrl = LocationService.generateStaticMapUrl(
-                        latitude: locationData.latitude!,
-                        longitude: locationData.longitude!);
-                  });
-                },
-                child: Text('get location')),
-            ElevatedButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (builder) => MapScreen(
-                          setLocationFn: setLocation,
-                        ))),
-                child: Text('Open'))
-          ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_staticMapUrl.isNotEmpty) Image.network(_staticMapUrl),
+              if (_address.isNotEmpty) Text('$_address'),
+              ElevatedButton(
+                  onPressed: () async {
+                    bool serviceEnabled = await _location.serviceEnabled();
+                    if (!serviceEnabled) {
+                      serviceEnabled = await _location.requestService();
+                      if (!serviceEnabled) return;
+                    }
+                    PermissionStatus permissionStatus =
+                        await _location.hasPermission();
+                    if (permissionStatus == PermissionStatus.denied) {
+                      permissionStatus = await _location.requestPermission();
+                      if (permissionStatus == PermissionStatus.denied) return;
+                    }
+                    final locationData = await _location.getLocation();
+                    String address = await LocationService.getCoordinateAddress(
+                      latitude: locationData.latitude!,
+                      longitude: locationData.longitude!,
+                    );
+
+                    setState(() {
+                      _locationData = LatLng(
+                          locationData.latitude!, locationData.longitude!);
+                      _address = address;
+                      _staticMapUrl = LocationService.generateStaticMapUrl(
+                          latitude: locationData.latitude!,
+                          longitude: locationData.longitude!);
+                    });
+                  },
+                  child: Text('Get location')),
+              ElevatedButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (builder) => MapScreen(
+                            setLocationFn: setLocation,
+                          ))),
+                  child: Text('Open'))
+            ],
+          ),
         ));
   }
 }
