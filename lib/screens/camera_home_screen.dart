@@ -34,21 +34,6 @@ class _CameraHomeScreenState extends State<CameraHomeScreen> {
                 },
               ),
             ),
-            // ElevatedButton(
-            //     onPressed: () async {
-            //       final pickFileImage = await ImagePicker().pickImage(
-            //           source: ImageSource.camera,
-            //           imageQuality: 10,
-            //           maxWidth: 1080,
-            //           maxHeight: 1920,
-            //           preferredCameraDevice: CameraDevice.front);
-            //       if (pickFileImage != null) {
-            //         setState(() {
-            //           _imageFile = File(pickFileImage.path);
-            //         });
-            //       }
-            //     },
-            //     child: Text('Buka kamera')),
             ElevatedButton(
                 onPressed: () async {
                   final pickFileImage = await ImagePicker().pickImage(

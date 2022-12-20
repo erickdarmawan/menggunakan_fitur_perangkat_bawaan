@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:menggunakan_fitur_perangkat_bawaan/models/place_location.dart';
+import 'package:menggunakan_fitur_perangkat_bawaan/screens/camera_home_screen.dart';
 import 'package:menggunakan_fitur_perangkat_bawaan/screens/map_screen.dart';
 import 'package:menggunakan_fitur_perangkat_bawaan/services/location_service.dart';
 
@@ -15,9 +16,8 @@ class LocationHomeScreen extends StatefulWidget {
 }
 
 class _LocationHomeScreenState extends State<LocationHomeScreen> {
-  StreamSubscription? _streamSubscription;
   LatLng? _locationData;
-  Location _location = Location();
+  final Location _location = Location();
   String _staticMapUrl = '';
   String _address = '';
 
@@ -29,10 +29,7 @@ class _LocationHomeScreenState extends State<LocationHomeScreen> {
           _location.requestPermission().then((permissionStatus) {
             if (permissionStatus == PermissionStatus.granted) {
               _location.enableBackgroundMode(enable: true);
-              _location.onLocationChanged.listen((locationData) {
-                print('DEBUG ${locationData.latitude}');
-                print('DEBUG ${locationData.longitude}');
-              });
+              _location.onLocationChanged.listen((locationData) {});
             }
           });
         }
@@ -64,8 +61,6 @@ class _LocationHomeScreenState extends State<LocationHomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (_staticMapUrl.isNotEmpty) Image.network(_staticMapUrl),
-              // if (_locationData != null)
-              // Text('${_locationData!.latitude}, ${_locationData!.longitude}'),
               if (_address.isNotEmpty) Text('$_address'),
               ElevatedButton(
                   onPressed: () async {
@@ -101,7 +96,21 @@ class _LocationHomeScreenState extends State<LocationHomeScreen> {
                       builder: (builder) => MapScreen(
                             setLocationFn: setLocation,
                           ))),
-                  child: Text('Open'))
+                  child: Text('Open')),
+              Container(
+                width: 160,
+                child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (builder) => CameraHomeScreen())),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.camera),
+                          SizedBox(width: 10),
+                          Text('Camera Mode'),
+                        ])),
+              )
             ],
           ),
         ));
