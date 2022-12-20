@@ -56,6 +56,7 @@ class _MapScreenState extends State<MapScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   widget.setLocationFn(_placeLocation);
+                  Navigator.pop(context);
                 },
                 child: Text('Set Lokasi'),
               ))

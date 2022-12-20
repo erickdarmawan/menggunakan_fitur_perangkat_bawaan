@@ -64,6 +64,8 @@ class _LocationHomeScreenState extends State<LocationHomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (_staticMapUrl.isNotEmpty) Image.network(_staticMapUrl),
+              // if (_locationData != null)
+              // Text('${_locationData!.latitude}, ${_locationData!.longitude}'),
               if (_address.isNotEmpty) Text('$_address'),
               ElevatedButton(
                   onPressed: () async {
